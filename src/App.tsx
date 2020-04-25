@@ -1,24 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+type Currency = {
+  label: string;
+  exchangeRate: number;
+  symbol: string;
+};
 
 function App() {
+  const [inputUsd, setInputUsd] = useState(0);
+
+  const currencies: Currency[] = [
+    {
+      label: "GBP",
+      exchangeRate: 0.808591,
+      symbol: "£",
+    },
+    {
+      label: "EUR",
+      exchangeRate: 0.926237,
+      symbol: "€",
+    },
+  ];
+
+  const [currencyIndex, setCurrencyIndex] = useState(0);
+  const currentCurrency = currencies[currencyIndex];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Currency Converter</h2>
+      $
+      <input
+        type="number"
+        value={inputUsd}
+        onChange={(e) => {
+          setInputUsd(Number(e.target.value));
+        }}
+        placeholder="Enter amount.."
+      />
+      <label>USD</label>
+      <p> converts to </p>
+      <p>
+        {currentCurrency.symbol}
+        {currentCurrency.exchangeRate * inputUsd}
+      </p>
+      <select
+        id="currencies"
+        name="currencies"
+        value={currencyIndex}
+        onChange={(e) => {
+          setCurrencyIndex(Number(e.target.value));
+        }}
+      >
+        {currencies.map(({ label }, index) => {
+          return (
+            <option key={label} value={index}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
     </div>
   );
 }
